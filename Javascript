@@ -1,0 +1,52 @@
+<script type="text/javascript" src="tpl/js/jquery-1.7.2.min.js"></script>
+<script type = "text/javascript">
+$(document).ready(function(){
+        
+    $(function() {
+        $.get("app/horario/festivo.php",{a:"dias"}, function(data) {
+            holiDays   = eval(data.dias);
+        });    
+    });
+    
+    
+   $('#menulinks li a').on('click',function() {
+    var href = $(this).attr("data-link");
+    var confirmed = false;
+    if(preguntar) {
+        confirmed = window.confirm("Esta seguro de salir sin guardar?");
+        if(confirmed) {
+            preguntar = false;
+            $("#resultado").load(href);
+        }
+    } else {
+        $("#resultado").load(href);
+    }
+    return false;
+   });
+     
+   $("#cargando").ajaxStart(function(){
+        $(this).show();
+    });
+   $("#cargando").ajaxStop(function(){
+        $(this).hide();
+   });
+
+    $(function() {
+        $(window).bind('beforeunload', function() {
+            if(salir == false){
+                return 'Por favor recuerde salir correctamente de la aplicacion.';
+            }
+        });   });
+   
+   $('#salir').on('click', function() {
+    var href = $(this).attr("href");
+    salir = true;
+    window.location = href;
+    return false;
+   });
+   
+});
+</script>
+
+
+
